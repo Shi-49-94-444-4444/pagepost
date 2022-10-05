@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import postsApi from "../api/postsApi";
 import { useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 const Create = () => {
   const { id } = useParams();
@@ -15,6 +16,11 @@ const Create = () => {
     title: "",
     body: "",
   });
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
 
   const handle = (e) => {
     const newState = { ...state };
@@ -22,9 +28,7 @@ const Create = () => {
     setState(newState);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const submitHandle = (e) => {
     postsApi.put({
       id: id,
       title: state.title,
@@ -35,22 +39,26 @@ const Create = () => {
   return (
     <Container style={{ marginTop: "50px" }}>
       <h1>Update</h1>
-      <form onSubmit={(e) => handleSubmit(e)}>
+      <form onSubmit={handleSubmit(submitHandle)}>
         <FormControl fullWidth style={{ marginBottom: "10px" }}>
           <InputLabel htmlFor="title">title</InputLabel>
           <Input
+            {...register("title", { required: true })}
             id="title"
             onChange={(e) => handle(e)}
             value={state.title}
           ></Input>
+          {errors.title && <span>This field is required</span>}
         </FormControl>
         <FormControl fullWidth style={{ marginBottom: "10px" }}>
           <InputLabel htmlFor="body">body</InputLabel>
           <Input
+            {...register("body", { required: true })}
             id="body"
             onChange={(e) => handle(e)}
             value={state.body}
           ></Input>
+          {errors.body && <span>This field is required</span>}
         </FormControl>
         <Button type="submit" size="large" color="info">
           Submit
