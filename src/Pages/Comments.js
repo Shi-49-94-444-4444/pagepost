@@ -1,41 +1,32 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Container, Card } from "@mui/material";
+import { Container, Card, CardContent } from "@mui/material";
 import { useParams } from "react-router";
+import commentsApi from "../api/commentsApi";
 
 const Comments = () => {
   const [comments, setComments] = useState([]);
   const { id } = useParams();
-  console.log(id);
 
-  useEffect(() => {
+  useEffect(() => { 
     const fetchPosts = async () => {
-      const comments = await axios.get(
-        "https://jsonplaceholder.typicode.com/comments"
-      );
-      setComments(comments.data);
+      const param = { postId: id };
+      const res = await commentsApi.getAll(param);
+      setComments(res);
     };
 
     fetchPosts();
-  }, []);
-
-  console.log(comments)
+  }, [id]);
 
   return (
-    <Container>
-      {Object.entries(comments).map((comment) => {
-        if (comment.postId === id) {
-          return (
-            <Card key={comment.id}>
-              {comment.id}
-              {comment.name}
-            </Card>
-          );
-        } else {
-          console.log(comment.id)
-          return <Card key={comment.id}>AB</Card>;
-        }
-      })}
+    <Container style={{ marginTop: "50px", }}>
+      <h1>Comments</h1>
+      <Card>
+        {comments.map((comment) => (
+          <CardContent key={comment.id}>
+            {comment.id}. {comment.name}
+          </CardContent>
+        ))}
+      </Card>
     </Container>
   );
 };

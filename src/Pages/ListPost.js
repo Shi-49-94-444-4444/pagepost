@@ -1,27 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Posts from "./Post";
 import Pagination from "../Components/Pagination";
-import axios from "axios";
 import "../App.css";
-import { Container } from "@mui/material";
-import { Outlet } from "react-router-dom";
+import { Container, Button, Grid } from "@mui/material";
+import { Outlet, useNavigate } from "react-router-dom";
+import postsApi from "../api/postsApi";
 
 const ListPost = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
+  const navigate = useNavigate();
+
+  const fetchPosts = useCallback(async () => {
+    try {
+      setLoading(true);
+      const res = await postsApi.getAll();
+      setPosts(res);
+      setLoading(false);
+    } catch (error) {
+      console.log("Failed to fetch product list: ", error);
+    }
+  },[]);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true);
-      const res = await axios.get("https://jsonplaceholder.typicode.com/posts");
-      setPosts(res.data);
-      setLoading(false);
-    };
-
     fetchPosts();
-  }, []);
+  }, [fetchPosts]);
 
   // Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
@@ -32,15 +37,19 @@ const ListPost = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <Container style={{ marginTop: "50px", }}>
-      <Posts posts={currentPosts} loading={loading} />
-      <Pagination
-        postsPerPage={postsPerPage}
-        totalPosts={posts.length}
-        paginate={paginate}
-      />
-      <Outlet />
-    </Container>
+    <Grid>
+      <Container style={{ marginTop: "50px" }}>
+        <h1>Posts</h1>
+        <Button onClick={() => navigate(`/create`)}>AddPost</Button>
+        <Posts onFetch={fetchPosts} posts={currentPosts} loading={loading} />
+        <Pagination
+          postsPerPage={postsPerPage}
+          totalPosts={posts.length}
+          paginate={paginate}
+        />
+        <Outlet />
+      </Container>
+    </Grid>
   );
 };
 

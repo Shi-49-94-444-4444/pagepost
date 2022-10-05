@@ -7,25 +7,26 @@ import {
   Button,
 } from "@mui/material";
 import postsApi from "../api/postsApi";
+import { useParams } from "react-router-dom";
 
 const Create = () => {
+  const { id } = useParams();
   const [state, setState] = useState({
-    userId: "",
     title: "",
     body: "",
   });
 
   const handle = (e) => {
-    const newState = {...state}
+    const newState = { ...state };
     newState[e.target.id] = e.target.value;
     setState(newState);
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    postsApi.post({
-      userId: state.userId,
+    postsApi.put({
+      id: id,
       title: state.title,
       body: state.body,
     });
@@ -33,16 +34,8 @@ const Create = () => {
 
   return (
     <Container style={{ marginTop: "50px" }}>
-      <h1>Create</h1>
+      <h1>Update</h1>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <FormControl fullWidth style={{ marginBottom: "10px" }}>
-          <InputLabel htmlFor="userId">userId</InputLabel>
-          <Input
-            id="userId"
-            onChange={(e) => handle(e)}
-            value={state.useId}
-          ></Input>
-        </FormControl>
         <FormControl fullWidth style={{ marginBottom: "10px" }}>
           <InputLabel htmlFor="title">title</InputLabel>
           <Input
