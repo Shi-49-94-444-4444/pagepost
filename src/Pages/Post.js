@@ -1,20 +1,30 @@
 import React from "react";
-import { Button, Card, CardContent, Grid } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardContent,
+  Grid,
+  CircularProgress,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
-import postsApi from "../api/postsApi";
+import { useDispatch } from "react-redux";
+import { deletePost } from "../redux/action";
 
 const Posts = ({ posts, loading, onFetch }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
-  const handleDelete = async id => {
-    await postsApi.delete(id)
-
-    onFetch()
-  }
+  const handleDelete = async (id) => {
+    await dispatch(deletePost(id));
+  };
 
   if (loading) {
-    return <h2>Loading...</h2>;
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <CircularProgress color="secondary" size="5rem" />
+      </div>
+    );
   }
 
   return (

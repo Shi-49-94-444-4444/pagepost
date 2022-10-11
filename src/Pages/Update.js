@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Input,
@@ -6,9 +6,10 @@ import {
   InputLabel,
   Button,
 } from "@mui/material";
-import postsApi from "../api/postsApi";
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { getSinglePost, updatePost } from "../redux/action";
 
 const Create = () => {
   const { id } = useParams();
@@ -21,6 +22,8 @@ const Create = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
+  const dispatch = useDispatch();
+  const { post } = useSelector((state) => state.data);
 
   const handle = (e) => {
     const newState = { ...state };
@@ -28,12 +31,24 @@ const Create = () => {
     setState(newState);
   };
 
-  const submitHandle = (e) => {
-    postsApi.put({
-      id: id,
-      title: state.title,
-      body: state.body,
-    });
+  useEffect(() => {
+    dispatch(getSinglePost(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (post) {
+      setState({ ...post });
+    }
+  }, [post]);
+
+  const submitHandle = () => {
+    dispatch(
+      updatePost({
+        id: id,
+        title: state.title,
+        body: state.body,
+      })
+    );
   };
 
   return (
@@ -46,7 +61,7 @@ const Create = () => {
             {...register("title", { required: true })}
             id="title"
             onChange={(e) => handle(e)}
-            value={state.title}
+            value={state.title || ""}
           ></Input>
           {errors.title && <span>This field is required</span>}
         </FormControl>
@@ -56,7 +71,7 @@ const Create = () => {
             {...register("body", { required: true })}
             id="body"
             onChange={(e) => handle(e)}
-            value={state.body}
+            value={state.body || ""}
           ></Input>
           {errors.body && <span>This field is required</span>}
         </FormControl>

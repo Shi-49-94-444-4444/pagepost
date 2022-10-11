@@ -6,8 +6,9 @@ import {
   InputLabel,
   Button,
 } from "@mui/material";
-import postsApi from "../api/postsApi";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { addPost } from "../redux/action";
 
 const Create = () => {
   const [state, setState] = useState({
@@ -20,6 +21,7 @@ const Create = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
+  let dispatch = useDispatch();
 
   const handle = (e) => {
     const newState = { ...state };
@@ -27,14 +29,14 @@ const Create = () => {
     setState(newState);
   };
 
-  const submitHandle = (e) => {
-    e.preventDefault();
+  const submitHandle = () => {
+    // e.preventDefault();
 
-    postsApi.post({
+    dispatch(addPost({
       userId: state.userId,
       title: state.title,
       body: state.body,
-    });
+    }))
   };
 
   return (

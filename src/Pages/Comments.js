@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Container, Card, CardContent } from "@mui/material";
 import { useParams } from "react-router";
-import commentsApi from "../api/commentsApi";
+import { useDispatch, useSelector } from "react-redux";
+import { getComments } from "../redux/action";
 
 const Comments = () => {
-  const [comments, setComments] = useState([]);
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const { comments } = useSelector((state) => state.comment);
 
-  useEffect(() => { 
+  useEffect(() => {
     const fetchPosts = async () => {
       const param = { postId: id };
-      const res = await commentsApi.getAll(param);
-      setComments(res);
+      await dispatch(getComments(param));
     };
 
     fetchPosts();
-  }, [id]);
+  }, [dispatch, id]);
 
   return (
-    <Container style={{ marginTop: "50px", }}>
+    <Container style={{ marginTop: "50px" }}>
       <h1>Comments</h1>
       <Card>
         {comments.map((comment) => (

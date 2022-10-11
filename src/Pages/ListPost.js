@@ -4,25 +4,26 @@ import Pagination from "../Components/Pagination";
 import "../App.css";
 import { Container, Button, Grid } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
-import postsApi from "../api/postsApi";
+import { loadPosts } from "../redux/action";
+import { useDispatch, useSelector } from "react-redux";
 
 const ListPost = () => {
-  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { posts } = useSelector((state) => state.data);
 
   const fetchPosts = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await postsApi.getAll();
-      setPosts(res);
+      await dispatch(loadPosts());
       setLoading(false);
     } catch (error) {
       console.log("Failed to fetch product list: ", error);
     }
-  },[]);
+  }, [dispatch]);
 
   useEffect(() => {
     fetchPosts();
