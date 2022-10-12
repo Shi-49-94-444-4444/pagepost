@@ -14,6 +14,12 @@ const postsReducers = (state = initialState, action) => {
         posts: action.payload,
         loading: false,
       };
+    case types.PAGINATION_PAGE:
+      return {
+        ...state,
+        posts: action.payload,
+        loading: false,
+      };
     case types.GET_SINGLE_POST:
       return {
         ...state,

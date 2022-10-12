@@ -7,6 +7,13 @@ const postsApi = {
     return axiosClient.get(url);
   },
 
+  page: (param) => {
+    console.log(param);
+    const url = `/posts?_page=${param}`;
+    const res = axiosClient.get(url);
+    return res;
+  },
+
   get: (id) => {
     const url = `/posts/${id}`;
     return axiosClient.get(url);
@@ -19,7 +26,6 @@ const postsApi = {
 
   post: (data) => {
     const url = "/posts";
-    console.log(data);
     return axiosClient.post(url, data);
   },
 

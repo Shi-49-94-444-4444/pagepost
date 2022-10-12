@@ -30,7 +30,7 @@ const Posts = ({ posts, loading, onFetch }) => {
   return (
     <Grid>
       <Card>
-        {posts.map((post) => (
+        {posts.currentData().map((post) => (
           <CardContent key={post.id} className="list-group-item">
             {post.id}. {post.title}
             <Button
