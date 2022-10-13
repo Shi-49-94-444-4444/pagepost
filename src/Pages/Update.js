@@ -18,8 +18,6 @@ const Create = () => {
     body: "",
   });
   const {
-    register,
-    formState: { errors },
     handleSubmit,
   } = useForm();
   const dispatch = useDispatch();
@@ -58,22 +56,18 @@ const Create = () => {
         <FormControl fullWidth style={{ marginBottom: "10px" }}>
           <InputLabel htmlFor="title">title</InputLabel>
           <Input
-            {...register("title", { required: true })}
             id="title"
             onChange={(e) => handle(e)}
             value={state.title || ""}
           ></Input>
-          {errors.title && <span>This field is required</span>}
         </FormControl>
         <FormControl fullWidth style={{ marginBottom: "10px" }}>
           <InputLabel htmlFor="body">body</InputLabel>
           <Input
-            {...register("body", { required: true })}
             id="body"
             onChange={(e) => handle(e)}
             value={state.body || ""}
           ></Input>
-          {errors.body && <span>This field is required</span>}
         </FormControl>
         <Button type="submit" size="large" color="info">
           Submit

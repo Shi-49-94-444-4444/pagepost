@@ -13,10 +13,12 @@ import { deletePost } from "../redux/action";
 
 const Posts = ({ posts, loading, onFetch }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleDelete = async (id) => {
     await dispatch(deletePost(id));
+
+    onFetch()
   };
 
   if (loading) {

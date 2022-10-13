@@ -4,6 +4,7 @@ const initialState = {
   post: {},
   comments: [],
   loading: false,
+  error: false,
 };
 
 const postsReducers = (state = initialState, action) => {
@@ -11,8 +12,12 @@ const postsReducers = (state = initialState, action) => {
     case types.GET_POSTS:
       return {
         ...state,
-        posts: action.payload,
         loading: false,
+      };
+    case types.LOADING:
+      return {
+        ...state,
+        loading: action.payload,
       };
     case types.PAGINATION_PAGE:
       return {

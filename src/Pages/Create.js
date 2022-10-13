@@ -51,7 +51,7 @@ const Create = () => {
             onChange={(e) => handle(e)}
             value={state.userId}
           ></Input>
-          {errors.userId && <span>This field is required</span>}
+          {errors.userId && <span style={{ color: 'red' }}>This field is required</span>}
         </FormControl>
         <FormControl fullWidth style={{ marginBottom: "10px" }}>
           <InputLabel htmlFor="title">title</InputLabel>
@@ -61,7 +61,7 @@ const Create = () => {
             onChange={(e) => handle(e)}
             value={state.title}
           ></Input>
-          {errors.title && <span>This field is required</span>}
+          {errors.title && <span style={{ color: 'red' }}>This field is required</span>}
         </FormControl>
         <FormControl fullWidth style={{ marginBottom: "10px" }}>
           <InputLabel htmlFor="body">body</InputLabel>
@@ -71,7 +71,7 @@ const Create = () => {
             onChange={(e) => handle(e)}
             value={state.body}
           ></Input>
-          {errors.body && <span>This field is required</span>}
+          {errors.body && <span style={{ color: 'red' }}>This field is required</span>}
         </FormControl>
         <Button type="submit" size="large" color="info">
           Submit

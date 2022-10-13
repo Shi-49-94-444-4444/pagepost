@@ -17,12 +17,19 @@ export const loadPosts = () => async (dispatch) => {
 
 export const paginationPage = (page) => async (dispatch) => {
   try {
-    const resp = await postsApi.page(page)
+    dispatch({
+      type: types.LOADING,
+      payload: true,
+    });
+    const resp = await postsApi.page(page);
     dispatch({
       type: types.PAGINATION_PAGE,
-      payload: resp
+      payload: resp,
     });
-    // dispatch(loadPosts())
+    dispatch({
+      type: types.LOADING,
+      payload: false,
+    });
   } catch (err) {
     console.log(err);
   }
@@ -34,7 +41,6 @@ export const deletePost = (id) => async (dispatch) => {
     dispatch({
       type: types.DELETE_POST,
     });
-    dispatch(loadPosts());
   } catch (err) {
     console.log(err);
   }

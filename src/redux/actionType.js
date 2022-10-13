@@ -5,3 +5,5 @@ export const UPDATE_POST = "UPDATE_POST";
 export const GET_SINGLE_POST = "GET_SINGLE_POST";
 export const GET_COMMENTS = "GET_COMMENTS";
 export const PAGINATION_PAGE= "PAGINATION_PAGE";
+export const LOADING= "LOADING";
+export const ERROR= "ERROR";

@@ -9,13 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import postsApi from "../api/postsApi";
 
 const ListPost = () => {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [postsPerPage] = useState(10);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { posts } = useSelector((state) => state.data);
+  const { posts, loading } = useSelector((state) => state.data);
   let [page, setPage] = useState(1);
   const PER_PAGE = 10;
 
@@ -26,17 +25,16 @@ const ListPost = () => {
     setPage(p);
     _DATA.jump(p);
     await dispatch(paginationPage(p));
-    // fetchPosts();
   };
 
   const fetchPosts = useCallback(async () => {
     try {
       let p = 1;
-      setLoading(true);
+      // setLoading(true);
       await dispatch(paginationPage(p));
       const res = await postsApi.getAll();
       setData(res);
-      setLoading(false);
+      // setLoading(false);
     } catch (error) {
       console.log("Failed to fetch product list: ", error);
     }
@@ -45,14 +43,6 @@ const ListPost = () => {
   useEffect(() => {
     fetchPosts();
   }, [fetchPosts]);
-
-  // Get current posts
-  // const indexOfLastPost = currentPage * postsPerPage;
-  // const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  // const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-
-  // // Change page
-  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <Grid>
